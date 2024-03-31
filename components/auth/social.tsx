@@ -18,7 +18,7 @@ export function Social({}: SocialProps) {
 	}
 
 	return (
-		<div className="flex items-center w-full gap-x-2">
+		<div className="flex items-center w-full gap-x-4">
 			<Button
 				size="lg"
 				className="w-full"

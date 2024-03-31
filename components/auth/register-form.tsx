@@ -43,7 +43,7 @@ export const RegisterForm = () => {
 	}
 
 	return (
-		<div>
+		<div className="w-full">
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 
@@ -92,7 +92,7 @@ export const RegisterForm = () => {
 					<FormError message={error} />
 					<FormSuccess message={success} />
 
-					<Button disabled={isPending} className="w-full" type="submit">Login</Button>
+					<Button disabled={isPending} className="w-full" type="submit">Register</Button>
 				</form>
 			</Form>
 		</div>

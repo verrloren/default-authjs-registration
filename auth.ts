@@ -1,30 +1,88 @@
-import NextAuth from "next-auth"
+import NextAuth, { type DefaultSession } from 'next-auth';
+import {PrismaAdapter} from '@auth/prisma-adapter';
+
+import { db } from '@/lib/db';
+import authConfig from '@/auth.config';
+import { getUserById } from '@/data/user';
+import { UserRole } from '@prisma/client';
 
 
-import GitHub from "next-auth/providers/github"
-import Google from "next-auth/providers/google"
-import Credentials from "next-auth/providers/credentials"
 
+export const { 
+	handlers: { GET, POST }, 
+	auth,
+	signIn,
+	signOut
+	} = NextAuth({
+		pages: {
+			//redirect to this url if something goes wrong
+			signIn: "/auth/login",
+			error: "/auth/error"
+		},
+		events: {
+			async linkAccount({ user }) {
+				await db.user.update({
+					where: { id: user.id },
+					data: { emailVerified: new Date() }
+				})
+			}
+		},
+		callbacks:{
+			//passing token from jwt to session and adding new field with value of token id
+			async session({ token, session }) {
+				console.log({ sessionToken: token })
 
-import type { NextAuthConfig } from "next-auth"
+				//add id to session.user
+				if(token.sub && session.user) {
+					session.user.id = token.sub
+				};
 
-export const config = {
-  providers: [
-    GitHub,
-    
-  ],
-  basePath: "/auth",
-  callbacks: {
-    authorized({ request, auth }) {
-      const { pathname } = request.nextUrl
-      if (pathname === "/middleware-example") return !!auth
-      return true
-    },
-    jwt({ token, trigger, session }) {
-      if (trigger === "update") token.name = session.user.name
-      return token
-    },
-  },
-} satisfies NextAuthConfig
+				// add role to session.user
 
-export const { handlers, auth, signIn, signOut } = NextAuth(config)
+				/*  typescript will throw error so we can add create next-auth.d.ts file:
+
+				import { UserRole } from "@prisma/client";
+				import NextAuth, { type DefaultSession } from "next-auth"
+							
+				export type ExtendedUser = DefaultSession["user"] & {
+					role: UserRole
+				};
+				
+				declare module "next-auth" {
+					interface Session {
+						user: ExtendedUser;
+					}
+				}
+				}*/
+
+				if(token.role && session.user.role) {
+					session.user.role = token.role as "ADMIN" || "USER";
+				}
+
+				return session
+			},	
+			async jwt({ token }) {
+				/* pass role to token because we can get access from the token
+					inside middleware in the request
+					hence we can create logic in the middleware
+					to check whether user is admin on not 
+				*/
+
+				//find user by id and add role to token
+				if(!token.sub) return token;
+
+				const existingUser = await getUserById(token.sub);
+
+				if(!existingUser) return token;
+
+				token.role = existingUser.role;
+
+				return token;
+			}
+		},
+		adapter: PrismaAdapter(db),
+		session: {
+			strategy: 'jwt'
+		},
+	...authConfig,
+})
