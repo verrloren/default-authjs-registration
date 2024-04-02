@@ -7,11 +7,10 @@ import Header from "@/components/navbar/header"
 const DM = DM_Sans({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-	title: "NextAuth.js Example",
+	title: "Alkeymist",
 	description:
-		"This is an example site to demonstrate how to use NextAuth.js for authentication",
+		"Alkeymist is a custom keyboards e-commerce store. We offer a wide range of custom keyboards, keycaps, and accessories. Admin panel for managing products and orders is also included.",
 }
-
 export default function RootLayout({ children }: React.PropsWithChildren) {
 	return (
 		<html lang="en">
