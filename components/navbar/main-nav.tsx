@@ -5,35 +5,35 @@ import Image from "next/image"
 import { cn } from "@/lib/utils"
 import CustomLink from "../custom-link"
 import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
+	NavigationMenu,
+	NavigationMenuContent,
+	NavigationMenuItem,
+	NavigationMenuLink,
+	NavigationMenuList,
+	NavigationMenuTrigger,
+	navigationMenuTriggerStyle,
 } from "../ui/navigation-menu"
 import React from "react"
 import { Button } from "@/components/ui/button"
 import { useRouter } from 'next/navigation';
 
 export function MainNav() {
-	
-	const router = useRouter(); 
-	
+
+	const router = useRouter();
+
 	return (
-    <div className="flex gap-4 items-center">
-          <Button onClick={() => router.push('/')} variant="ghost">
-						<Image
-							src="/images/logoRemove.png"
-							alt="Home"
-							width="100"
-							height="50"
-						/>
-					</Button>
-      
-    </div>
-  )
+		<div className="flex gap-4 items-center">
+			<Button onClick={() => router.push('/')} variant="ghost">
+				<Image
+					src="/images/logoRemove.png"
+					alt="Home"
+					width="100"
+					height="50"
+				/>
+			</Button>
+
+		</div>
+	)
 }
 
 

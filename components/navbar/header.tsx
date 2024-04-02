@@ -7,6 +7,7 @@ import { auth } from "@/auth"
 import { signOut } from "next-auth/react"
 import { LogoutButton } from "../auth/logout-button"
 import Container from "@/components/container"
+import { ThemeToggle } from "../theme-toggle"
 
 export default async function Header() {
 
@@ -24,6 +25,7 @@ export default async function Header() {
 					{session ? (
 
 						<LogoutButton />
+						
 					) : (
 						<div className="flex gap-4">
 							<LoginButton>
@@ -40,6 +42,7 @@ export default async function Header() {
 					)}
 				</div>
 			</Container>
+			{/* <ThemeToggle /> */}
 		</header>
 	)
 }
