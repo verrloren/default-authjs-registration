@@ -7,8 +7,8 @@ interface LoginPageProps {}
 
 export default function LoginPage({}: LoginPageProps) {
 	return (
-		<div className="w-full flex flex-col justify-center items-center">
-			<h1 className="sm:text-5xl text-4xl font-semibold pb-12">
+		<div className="w-full h-full flex flex-col justify-center items-center">
+			<h1 className="sm:text-5xl text-4xl font-semibold text-center absolute top-[22%]">
 				Welcome back!
 			</h1>
 			

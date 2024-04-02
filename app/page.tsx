@@ -6,7 +6,6 @@ export default async function Index() {
 
   return (
     <div className="flex justify-center items-center">
-			<h1>Auth</h1>
     </div>
   )
 }

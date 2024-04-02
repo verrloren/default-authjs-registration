@@ -11,9 +11,11 @@ import { FormError } from "@/components/auth/form-error";
 import { FormSuccess } from "@/components/auth/form-success";
 import { useState, useTransition } from "react";
 import { register } from "@/actions/register";
+import { useRouter } from "next/navigation";
 
 export const RegisterForm = () => {
 
+	const router = useRouter();
 	const [error, setError] = useState<string | undefined>("");
 	const [success, setSuccess] = useState<string | undefined>("");
 	const [isPending, setTransition] = useTransition();
@@ -38,6 +40,10 @@ export const RegisterForm = () => {
 				.then((data) => {
 					setError(data.error)
 					setSuccess(data.success)
+				})
+				.finally(() => {
+					form.reset()
+					router.push('/auth/login')
 				})
 		})
 	}
@@ -92,7 +98,7 @@ export const RegisterForm = () => {
 					<FormError message={error} />
 					<FormSuccess message={success} />
 
-					<Button disabled={isPending} className="w-full" type="submit">Register</Button>
+					<Button disabled={isPending} className="w-full" type="submit">Sign up</Button>
 				</form>
 			</Form>
 		</div>
